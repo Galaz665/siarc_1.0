@@ -144,3 +144,6 @@ GNU General Public License v3.0 (GPLv3)
 Ilich Galaz
 
 Proyecto SIARC - Sistema Integral de Análisis de Riesgo de Cartera.
+
+
+cf54f2db46b7d9f3719394d62bb59f67a2643098
