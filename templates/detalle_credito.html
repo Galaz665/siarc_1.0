@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+
+    <div>
+        <h1>{{ credito.codigo_credito }}</h1>
+        <p class="text-muted mb-0">{{ credito.nombre_acreditado }}</p>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+
+        {% if not desembolsado %}
+
+    <a href="/creditos/{{ credito.codigo_credito }}/desembolsar"
+       class="btn btn-success">
+        Desembolsar Crédito
+    </a>
+
+{% else %}
+
+    <span class="badge bg-success align-self-center">
+        Crédito desembolsado
+    </span>
+
+    {% if credito.saldo_actual > 0 %}
+
+        <a href="/creditos/{{ credito.codigo_credito }}/pago"
+           class="btn btn-primary">
+            Registrar Pago
+        </a>
+
+        <a href="/creditos/{{ credito.codigo_credito }}/liquidacion"
+           class="btn btn-danger">
+            Liquidar Crédito
+        </a>
+
+        {% if not credito.estatus_cobertura %}
+            <a href="/creditos/{{ credito.codigo_credito }}/garantia"
+               class="btn btn-warning">
+                Asignar Garantía
+            </a>
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}
+
+
+    </div>
+
+</div>
+
+{% if credito.estatus_cobertura %}
+<div class="table-card mt-4">
+    <h4>Garantía / Fondo</h4>
+
+    <table class="table">
+        <tr>
+            <th>Fondo</th>
+            <td>{{ credito.nombre_fondo }}</td>
+        </tr>
+        <tr>
+            <th>Cobertura</th>
+            <td>{{ "%.2f"|format((credito.porcentaje_cobertura or 0) * 100) }}%</td>
+        </tr>
+        <tr>
+            <th>Monto cubierto</th>
+            <td>${{ "{:,.2f}".format(credito.monto_maximo_cubierto or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Estatus</th>
+            <td>
+                {% if credito.estatus_cobertura == 'ACTIVA' %}
+                    <span class="badge bg-success">ACTIVA</span>
+                {% elif credito.estatus_cobertura == 'RECLAMADA' %}
+                    <span class="badge bg-warning text-dark">RECLAMADA</span>
+                {% elif credito.estatus_cobertura == 'CERRADA_POR_RECUPERACION' %}
+                    <span class="badge bg-primary">CERRADA POR RECUPERACIÓN</span>
+                {% elif credito.estatus_cobertura == 'LIBERADA' %}
+                    <span class="badge bg-secondary">LIBERADA</span>
+                {% else %}
+                    {{ credito.estatus_cobertura }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    {% if credito.estatus_cobertura == 'RECLAMADA'
+      and reclamacion
+      and reclamacion.estatus_reclamacion != 'PAGADA' %}
+     <a href="/fonaga/{{ reclamacion.id_reclamacion }}/pago"
+            class="btn btn-success">
+            Registrar Pago Fondo
+     </a>
+    {% endif %}
+
+    {% if reclamacion and reclamacion.estatus_reclamacion == 'PAGADA' %}
+        <div class="alert alert-success mt-3">
+            El fondo ya pagó la garantía. Los pagos posteriores del acreditado se registrarán como recuperación post-garantía.
+        </div>
+    {% endif %}
+
+    {% if credito.estatus_cobertura == 'RECLAMADA' and reclamacion %}
+        <a href="/fonaga/{{ reclamacion.id_reclamacion }}/pago"
+            class="btn btn-success">
+            Registrar Pago Fondo
+        </a>
+    {% endif %}
+
+
+
+    {% if credito.estatus_cobertura == 'CERRADA_POR_RECUPERACION' %}
+        <div class="alert alert-success">
+            La cobertura FONAGA fue cerrada por recuperación total del crédito.
+        </div>
+    {% endif %}
+
+    {% if credito.estatus_cobertura == 'ACTIVA'
+        and riesgo
+        and (riesgo.etapa_riesgo == 'ETAPA 3' or riesgo.dias_atraso >= 180) %}
+
+        <a href="/creditos/{{ credito.codigo_credito }}/reclamar_garantia"
+            class="btn btn-danger">
+            Reclamar Garantía
+        </a>
+
+    {% elif credito.estatus_cobertura == 'ACTIVA' %}
+
+        <div class="alert alert-info mt-3">
+            Garantía activa. Aún no es reclamable:
+            requiere ETAPA 3 o al menos 180 días de atraso.
+        </div>
+
+    {% endif %}
+
+</div>
+{% endif %}
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Saldo Actual</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(credito.saldo_actual or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Días Atraso</div>
+            <div class="kpi-value">{{ riesgo.dias_atraso if riesgo else '-' }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Etapa</div>
+            <div class="kpi-value">{{ riesgo.etapa_riesgo if riesgo else '-' }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Semáforo</div>
+            <div class="kpi-value">
+                {% if riesgo and riesgo.semaforo == 'VERDE' %}
+                    <span class="badge bg-success">VERDE</span>
+                {% elif riesgo and riesgo.semaforo == 'AMARILLO' %}
+                    <span class="badge bg-warning text-dark">AMARILLO</span>
+                {% elif riesgo and riesgo.semaforo == 'ROJO' %}
+                    <span class="badge bg-danger">ROJO</span>
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">PD</div>
+            <div class="kpi-value">{{ "{:.2f}".format((riesgo.pd or 0) * 100) if riesgo else "0.00" }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">LGD</div>
+            <div class="kpi-value">{{ "{:.2f}".format((riesgo.lgd or 0) * 100) if riesgo else "0.00" }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Pérdida Esperada</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(riesgo.perdida_esperada or 0) if riesgo else "0.00" }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="table-card mt-4">
+    <h3>Calendario de Pagos</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Vencimiento</th>
+                <th>Saldo Inicial</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Pago</th>
+                <th>Saldo Final</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in calendario %}
+            <tr>
+                <td>{{ r.numero_pago }}</td>
+                <td>{{ r.fecha_vencimiento }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_inicial or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.capital_programado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.interes_programado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.pago_programado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_final or 0) }}</td>
+                <td>{{ r.estatus_pago }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="table-card mt-4">
+    <h3>Pagos Realizados</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Fecha</th>
+                <th>Importe</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Saldo Anterior</th>
+                <th>Saldo Posterior</th>
+                <th>Referencia</th>
+                <th>Canal</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in pagos %}
+            <tr>
+                <td>{{ r.numero_pago or '-' }}</td>
+                <td>{{ r.fecha_pago }}</td>
+                <td>${{ "{:,.2f}".format(r.importe_pagado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.capital_pagado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.interes_pagado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_anterior or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_posterior or 0) }}</td>
+                <td>{{ r.referencia_pago or '-' }}</td>
+                <td>{{ r.canal_pago or '-' }}</td>
+                <td>{{ r.usuario }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10" class="text-muted">Sin pagos registrados.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="table-card mt-4">
+    <h3>IFRS9</h3>
+
+    {% if reservas %}
+        <table class="table table-hover">
+            <tr>
+                <th>Reserva Bruta</th>
+                <td>${{ "{:,.2f}".format(reservas.reserva_bruta or 0) }}</td>
+            </tr>
+            <tr>
+                <th>Reserva Neta Institución</th>
+                <td>${{ "{:,.2f}".format(reservas.reserva_neta_institucion or 0) }}</td>
+            </tr>
+            <tr>
+                <th>Reducción Total Reserva</th>
+                <td>${{ "{:,.2f}".format(reservas.reduccion_total_reserva or 0) }}</td>
+            </tr>
+        </table>
+    {% else %}
+        <p class="text-muted">Sin información IFRS9.</p>
+    {% endif %}
+</div>
+
+<div class="table-card mt-4">
+    <h3>Pólizas Contables</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Evento</th>
+                <th>Fecha</th>
+                <th>Cargos</th>
+                <th>Abonos</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in polizas %}
+            <tr>
+                <td>{{ r.id_poliza }}</td>
+                <td>{{ r.clave_evento }}</td>
+                <td>{{ r.fecha_poliza }}</td>
+                <td>${{ "{:,.2f}".format(r.total_cargos or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.total_abonos or 0) }}</td>
+                <td>{{ r.estatus_balance }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-muted">Sin pólizas registradas.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

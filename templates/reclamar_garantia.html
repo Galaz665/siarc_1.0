@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Reclamar Garantía</h1>
+
+<p class="text-muted">
+    {{ credito.codigo_credito }} - {{ credito.nombre_acreditado }}
+</p>
+
+<div class="table-card">
+
+    <table class="table">
+        <tr>
+            <th>Saldo actual</th>
+            <td>${{ "{:,.2f}".format(credito.saldo_actual or 0) }}</td>
+        </tr>
+    </table>
+
+    <form method="post">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label>Saldo reclamado</label>
+                <input class="form-control"
+                       name="saldo_reclamado"
+                       type="number"
+                       step="0.01"
+                       required>
+            </div>
+
+            <div class="col-md-8">
+                <label>Observaciones</label>
+                <input class="form-control"
+                       name="observaciones"
+                       value="Reclamación de garantía desde SIARC Web">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-danger">
+            Registrar Reclamación
+        </button>
+
+        <a href="/creditos/{{ credito.codigo_credito }}"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

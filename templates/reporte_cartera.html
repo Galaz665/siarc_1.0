@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Reporte General de Cartera</h1>
+<p class="text-muted">Datos personales, contacto, crédito, riesgo, IFRS9 y garantías.</p>
+
+<a href="/reportes/cartera/csv" class="btn btn-success mb-3">
+    Descargar CSV
+</a>
+
+<div class="table-card mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Crédito</th>
+                <th>Acreditado</th>
+                <th>CURP</th>
+                <th>RFC</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Estado</th>
+                <th>Municipio</th>
+                <th>Actividad</th>
+                <th>Producto</th>
+                <th>Monto</th>
+                <th>Saldo</th>
+                <th>Días</th>
+                <th>Etapa</th>
+                <th>Semáforo</th>
+                <th>PD</th>
+                <th>LGD</th>
+                <th>PE</th>
+                <th>Fondo</th>
+                <th>Cobertura</th>
+                <th>Estatus Garantía</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in datos %}
+            <tr>
+                <td><a href="/creditos/{{ r.codigo_credito }}">{{ r.codigo_credito }}</a></td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>{{ r.curp }}</td>
+                <td>{{ r.rfc }}</td>
+                <td>{{ r.telefono }}</td>
+                <td>{{ r.correo }}</td>
+                <td>{{ r.estado }}</td>
+                <td>{{ r.municipio }}</td>
+                <td>{{ r.actividad_economica }}</td>
+                <td>{{ r.producto }}</td>
+                <td>${{ "{:,.2f}".format(r.monto_aprobado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_actual or 0) }}</td>
+                <td>{{ r.dias_atraso }}</td>
+                <td>{{ r.etapa_riesgo }}</td>
+                <td>{{ r.semaforo }}</td>
+                <td>{{ "{:.2f}".format((r.pd or 0) * 100) }}%</td>
+                <td>{{ "{:.2f}".format((r.lgd or 0) * 100) }}%</td>
+                <td>${{ "{:,.2f}".format(r.perdida_esperada or 0) }}</td>
+                <td>{{ r.fondo_garantia or '-' }}</td>
+                <td>{{ "{:.2f}".format((r.porcentaje_cobertura or 0) * 100) }}%</td>
+                <td>{{ r.estatus_cobertura or '-' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

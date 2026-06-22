@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Dashboard FONAGA</h1>
+<p class="text-muted">Indicadores de garantías, reclamaciones y recuperaciones posteriores.</p>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Reclamaciones</div>
+            <div class="kpi-value">{{ resumen.reclamaciones }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Cobertura Promedio</div>
+            <div class="kpi-value">{{ "{:.2f}".format(resumen.cobertura_promedio or 0) }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">% Recuperación Fondo</div>
+            <div class="kpi-value">{{ "{:.2f}".format(resumen.porcentaje_recuperacion_fondo or 0) }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Pérdida Neta Fondo</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.perdida_neta_fondo or 0) }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Saldo Reclamado</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.saldo_reclamado_total or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Reclamado Fondo</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.monto_reclamado_fondo_total or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Pagado Fondo</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.total_pagado_fondo or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Recuperado Fondo</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.recuperado_para_fondo or 0) }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Recuperado Total</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.total_recuperado or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Recuperado Institución</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.recuperado_para_institucion or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Pérdida Neta Institución</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.perdida_neta_institucion or 0) }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="table-card mt-4">
+    <h3>Lectura Ejecutiva</h3>
+
+    <table class="table">
+        <tr>
+            <th>Fondo</th>
+            <td>{{ resumen.fondo }}</td>
+        </tr>
+        <tr>
+            <th>Interpretación</th>
+            <td>
+                El fondo ha pagado
+                <strong>${{ "{:,.2f}".format(resumen.total_pagado_fondo or 0) }}</strong>
+                y ha recuperado para el fondo
+                <strong>${{ "{:,.2f}".format(resumen.recuperado_para_fondo or 0) }}</strong>.
+                La recuperación equivale al
+                <strong>{{ "{:.2f}".format(resumen.porcentaje_recuperacion_fondo or 0) }}%</strong>
+                de lo pagado.
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="table-card mt-4">
+    <h3>Detalle de Reclamaciones</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Crédito</th>
+                <th>Acreditado</th>
+                <th>Fondo</th>
+                <th>Reclamado</th>
+                <th>Pagado Fondo</th>
+                <th>Recuperado</th>
+                <th>Para Fondo</th>
+                <th>Institución</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in detalle %}
+            <tr>
+                <td>
+                    <a href="/creditos/{{ r.codigo_credito }}">
+                        {{ r.codigo_credito }}
+                    </a>
+                </td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>{{ r.fondo }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_reclamado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.total_pagado_fondo or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.total_recuperado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.recuperado_para_fondo or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.recuperado_para_institucion or 0) }}</td>
+                <td>{{ r.estatus_reclamacion }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Registrar Pago</h1>
+
+<p class="text-muted">
+    Crédito {{ credito.codigo_credito }} - {{ credito.nombre_acreditado }}
+</p>
+
+<div class="table-card">
+
+    <h4>Información del crédito</h4>
+
+    <table class="table">
+        <tr>
+            <th>Saldo actual</th>
+            <td>${{ "{:,.2f}".format(credito.saldo_actual or 0) }}</td>
+        </tr>
+
+        {% if siguiente_pago %}
+        <tr>
+            <th>Siguiente pago</th>
+            <td>{{ siguiente_pago.numero_pago }}</td>
+        </tr>
+        <tr>
+            <th>Fecha vencimiento</th>
+            <td>{{ siguiente_pago.fecha_vencimiento }}</td>
+        </tr>
+        <tr>
+            <th>Pago programado</th>
+            <td>${{ "{:,.2f}".format(siguiente_pago.pago_programado or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Capital</th>
+            <td>${{ "{:,.2f}".format(siguiente_pago.capital_programado or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Interés</th>
+            <td>${{ "{:,.2f}".format(siguiente_pago.interes_programado or 0) }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    {% if siguiente_pago %}
+
+    <form method="post">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label>Fecha de pago</label>
+                <input
+                    class="form-control"
+                    name="fecha_pago"
+                    type="date"
+                    required>
+            </div>
+
+            <div class="col-md-4">
+                <label>Importe pagado</label>
+                <input
+                    class="form-control"
+                    name="importe_pagado"
+                    type="number"
+                    step="0.01"
+                    value="{{ siguiente_pago.pago_programado }}"
+                    required>
+            </div>
+
+            <div class="col-md-4">
+                <label>Referencia de pago</label>
+                <input
+                    class="form-control"
+                    name="referencia_pago"
+                    placeholder="SPEI-12345 / CAJA-0001 / EXT-0001">
+            </div>
+
+            <div class="col-md-4">
+                <label>Canal de pago</label>
+                <select class="form-control" name="canal_pago">
+                    <option value="CAJA">Caja</option>
+                    <option value="SPEI">SPEI</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                    <option value="BANCO">Banco</option>
+                    <option value="MIFOS">Mifos</option>
+                    <option value="API_EXTERNA">API externa</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>Usuario</label>
+                <input
+                    class="form-control"
+                    name="usuario"
+                    value="SIARC_WEB">
+            </div>
+
+            <div class="col-md-8">
+                <label>Observaciones</label>
+                <input
+                    class="form-control"
+                    name="observaciones"
+                    placeholder="Observaciones del pago">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-success">
+            Aplicar Pago
+        </button>
+
+        <a href="/creditos/{{ credito.codigo_credito }}"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+    {% else %}
+
+        <p class="text-success">
+            Este crédito no tiene pagos pendientes.
+        </p>
+
+        <a href="/creditos/{{ credito.codigo_credito }}"
+           class="btn btn-secondary">
+            Regresar
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

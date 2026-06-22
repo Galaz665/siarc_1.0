@@ -1,0 +1,66 @@
+<svg width="420" height="150" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="siarcBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071E3D"/>
+      <stop offset="100%" stop-color="#0B4F6C"/>
+    </linearGradient>
+
+    <linearGradient id="siarcTeal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00A6A6"/>
+      <stop offset="100%" stop-color="#3DDC97"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="420" height="150" rx="24" fill="none"/>
+
+  <g transform="translate(25,25)">
+    <path d="M8 78 C38 76, 58 60, 78 34"
+          fill="none"
+          stroke="url(#siarcBlue)"
+          stroke-width="12"
+          stroke-linecap="round"/>
+
+    <path d="M10 88 C40 86, 68 68, 98 28"
+          fill="none"
+          stroke="url(#siarcTeal)"
+          stroke-width="6"
+          stroke-linecap="round"
+          opacity="0.95"/>
+
+    <line x1="8" y1="92" x2="105" y2="92"
+          stroke="#0B4F6C"
+          stroke-width="3"
+          stroke-linecap="round"
+          opacity="0.65"/>
+
+    <circle cx="10" cy="78" r="12" fill="url(#siarcBlue)"/>
+    <circle cx="46" cy="64" r="10" fill="#0B4F6C"/>
+    <circle cx="75" cy="38" r="10" fill="#00A6A6"/>
+    <circle cx="98" cy="28" r="10" fill="#3DDC97"/>
+  </g>
+
+  <text x="150" y="70"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="46"
+        font-weight="800"
+        letter-spacing="3"
+        fill="#071E3D">
+    SIARC
+  </text>
+
+  <text x="153" y="98"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="14"
+        letter-spacing="1.4"
+        fill="#0B4F6C">
+    Sistema Integral de Análisis
+  </text>
+
+  <text x="153" y="117"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="14"
+        letter-spacing="1.4"
+        fill="#0B4F6C">
+    de Riesgo de Cartera
+  </text>
+</svg>

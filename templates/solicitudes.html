@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Solicitudes</h1>
+
+<p class="text-muted">
+    Solicitudes de crédito capturadas en SIARC.
+</p>
+
+<a href="/solicitudes/nueva" class="btn btn-success mb-3">
+    Nueva Solicitud
+</a>
+
+<div class="table-card mt-4">
+
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Folio</th>
+                <th>Solicitante</th>
+                <th>Estado</th>
+                <th>Municipio</th>
+                <th>Monto</th>
+                <th>Plazo</th>
+                <th>Estatus</th>
+                <th>Semáforo</th>
+                <th>Score</th>
+                <th>Monto Recomendado</th>
+                <th>Dictamen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for r in datos %}
+
+            <tr>
+
+                <td>{{ r.folio_solicitud }}</td>
+
+                <td>{{ r.solicitante }}</td>
+
+                <td>{{ r.estado }}</td>
+
+                <td>{{ r.municipio }}</td>
+
+                <td>
+                    ${{ "{:,.2f}".format(r.monto_solicitado or 0) }}
+                </td>
+
+                <td>
+                    {{ r.plazo_meses }} meses
+                </td>
+
+                <td>
+                    {{ r.estatus }}
+                </td>
+
+                <td>
+
+                    {% if r.semaforo_preliminar == 'VERDE' %}
+                        <span class="badge bg-success">
+                            VERDE
+                        </span>
+
+                    {% elif r.semaforo_preliminar == 'AMARILLO' %}
+                        <span class="badge bg-warning text-dark">
+                            AMARILLO
+                        </span>
+
+                    {% elif r.semaforo_preliminar == 'ROJO' %}
+                        <span class="badge bg-danger">
+                            ROJO
+                        </span>
+
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </td>
+
+                <td>
+                    {{ r.score_preliminar or '-' }}
+                </td>
+
+                <td>
+                    ${{ "{:,.2f}".format(r.monto_recomendado or 0) }}
+                </td>
+
+                <td>
+                    {{ r.dictamen_preliminar or '-' }}
+                </td>
+
+                <td>
+
+                    {% if r.estatus in ['CAPTURADA', 'VALIDACION'] %}
+
+                       <a href="/solicitudes/{{ r.id_solicitud }}/analizar"
+                       class="btn btn-warning btn-sm">
+                       Analizar
+                       </a>
+
+                   {% elif r.estatus == 'ANALISIS' %}
+
+                       <a href="/solicitudes/{{ r.id_solicitud }}/comite"
+                       class="btn btn-primary btn-sm">
+                       Enviar Comité
+                       </a>
+
+                   {% elif r.estatus == 'COMITE' %}
+
+                        <a href="/solicitudes/{{ r.id_solicitud }}/aprobar"
+                         class="btn btn-success btn-sm">
+                        Aprobar
+                        </a>
+
+                        <a href="/solicitudes/{{ r.id_solicitud }}/rechazar"
+                        class="btn btn-danger btn-sm">
+                        Rechazar
+                        </a>
+
+                  {% elif r.estatus == 'APROBADA' %}
+
+                      {% if r.tiene_credito %}
+
+                         <span class="text-muted">
+                             Crédito generado
+                         </span>
+
+                      {% else %}
+
+                        <a href="/solicitudes/{{ r.id_solicitud }}/originar"
+                        class="btn btn-success btn-sm">
+                          Originar Crédito
+                        </a>
+
+                      {% endif %}
+
+                  {% elif r.estatus == 'RECHAZADA' %}
+
+                        <span class="text-danger">Rechazada</span>
+
+                  {% else %}
+
+                        <span class="text-muted">{{ r.estatus }}</span>
+
+                  {% endif %}
+
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

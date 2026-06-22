@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Riesgo</h1>
+<p class="text-muted">PD, LGD, EAD y pérdida esperada por crédito.</p>
+
+<div class="table-card mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Crédito</th>
+                <th>Acreditado</th>
+                <th>Saldo</th>
+                <th>Días atraso</th>
+                <th>PD</th>
+                <th>LGD</th>
+                <th>EAD</th>
+                <th>Pérdida esperada</th>
+                <th>Semáforo</th>
+                <th>Gestión</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in datos %}
+            <tr>
+                <td>{{ r.codigo_credito }}</td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_actual or 0) }}</td>
+                <td>{{ r.dias_atraso }}</td>
+                <td>{{ "{:.2f}".format((r.pd or 0) * 100) }}%</td>
+                <td>{{ "{:.2f}".format((r.lgd or 0) * 100) }}%</td>
+                <td>${{ "{:,.2f}".format(r.ead or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.perdida_esperada or 0) }}</td>
+                <td>
+                    {% if r.semaforo == 'VERDE' %}
+                        <span class="badge badge-verde">VERDE</span>
+                    {% elif r.semaforo == 'AMARILLO' %}
+                        <span class="badge badge-amarillo">AMARILLO</span>
+                    {% else %}
+                        <span class="badge badge-rojo">ROJO</span>
+                    {% endif %}
+                </td>
+                <td>{{ r.estatus_gestion_riesgo }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

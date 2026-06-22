@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Reservas IFRS9</h1>
+
+<div class="table-card">
+
+<table class="table table-hover">
+
+<thead>
+<tr>
+    <th>Crédito</th>
+    <th>Cliente</th>
+    <th>Etapa</th>
+    <th>PD</th>
+    <th>LGD Ajustada</th>
+    <th>EAD</th>
+    <th>Reserva Bruta</th>
+    <th>Reserva Neta</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in datos %}
+
+<tr>
+    <td>{{ r.codigo_credito }}</td>
+    <td>{{ r.nombre_acreditado }}</td>
+    <td>{{ r.etapa_riesgo }}</td>
+    <td>{{ "%.2f"|format(r.probabilidad_incumplimiento*100) }}%</td>
+    <td>{{ "%.2f"|format(r.severidad_perdida_ajustada*100) }}%</td>
+    <td>${{ "{:,.2f}".format(r.saldo_insoluto) }}</td>
+    <td>${{ "{:,.2f}".format(r.reserva_bruta) }}</td>
+    <td>${{ "{:,.2f}".format(r.reserva_neta_institucion) }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

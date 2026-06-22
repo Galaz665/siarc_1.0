@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Auditoría</h1>
+
+<div class="table-card">
+
+<table class="table table-hover">
+
+<thead>
+<tr>
+    <th>Fecha</th>
+    <th>Módulo</th>
+    <th>Acción</th>
+    <th>Referencia</th>
+    <th>Descripción</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in datos %}
+
+<tr>
+    <td>{{ r.fecha_evento }}</td>
+    <td>{{ r.modulo }}</td>
+    <td>{{ r.accion }}</td>
+    <td>{{ r.referencia }}</td>
+    <td>{{ r.descripcion }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

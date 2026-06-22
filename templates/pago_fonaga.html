@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Registrar Pago FONAGA</h1>
+
+<p class="text-muted">
+    {{ reclamacion.codigo_credito }} - {{ reclamacion.nombre_acreditado }}
+</p>
+
+<div class="table-card">
+
+    <h4>Datos de la reclamación</h4>
+
+    <table class="table">
+        <tr>
+            <th>Fondo</th>
+            <td>{{ reclamacion.fondo }}</td>
+        </tr>
+        <tr>
+            <th>Saldo reclamado</th>
+            <td>${{ "{:,.2f}".format(reclamacion.saldo_reclamado or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Monto reclamado al fondo</th>
+            <td>${{ "{:,.2f}".format(reclamacion.monto_reclamado_fondo or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Pagado actualmente</th>
+            <td>${{ "{:,.2f}".format(reclamacion.total_pagado_fondo or 0) }}</td>
+        </tr>
+        <tr>
+            <th>Estatus</th>
+            <td>{{ reclamacion.estatus_reclamacion }}</td>
+        </tr>
+    </table>
+
+    <form method="post">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label>Monto pagado por el fondo</label>
+                <input
+                    class="form-control"
+                    name="monto_pagado_fondo"
+                    type="number"
+                    step="0.01"
+                    value="{{ reclamacion.monto_reclamado_fondo }}"
+                    required>
+            </div>
+
+            <div class="col-md-4">
+                <label>Referencia pago</label>
+                <input
+                    class="form-control"
+                    name="referencia_pago"
+                    placeholder="PAGO-FONAGA-0001"
+                    required>
+            </div>
+
+            <div class="col-md-12">
+                <label>Observaciones</label>
+                <input
+                    class="form-control"
+                    name="observaciones"
+                    value="Pago de garantía FONAGA desde SIARC Web">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-success">
+            Registrar Pago FONAGA
+        </button>
+
+        <a href="/creditos/{{ reclamacion.codigo_credito }}"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

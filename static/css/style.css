@@ -1,0 +1,96 @@
+body {
+    background: #f3f6fa;
+    font-family: Arial, sans-serif;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background: #0f172a;
+    color: white;
+    padding: 25px;
+}
+
+.sidebar h3 {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.version {
+    color: #cbd5e1;
+    font-size: 13px;
+    margin-bottom: 30px;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #e5e7eb;
+    text-decoration: none;
+    padding: 12px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.sidebar nav a:hover {
+    background: #1e293b;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+.card-kpi {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+
+.kpi-title {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.kpi-value {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.badge-verde {
+    background: #16a34a;
+}
+
+.badge-amarillo {
+    background: #f59e0b;
+}
+
+.badge-rojo {
+    background: #dc2626;
+}
+
+.table-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+
+.content {
+    overflow-x: auto;
+}
+
+.table-card {
+    overflow-x: auto;
+}
+
+.card-kpi {
+    min-height: 120px;
+}
+
+.kpi-value {
+    word-break: break-word;
+}

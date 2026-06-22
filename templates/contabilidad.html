@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Contabilidad</h1>
+
+<h3>Balance de cuentas</h3>
+
+<div class="table-card mb-4">
+
+<table class="table table-sm">
+
+<thead>
+<tr>
+    <th>Cuenta</th>
+    <th>Nombre</th>
+    <th>Saldo</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in resumen %}
+
+<tr>
+    <td>{{ r.cuenta }}</td>
+    <td>{{ r.nombre_cuenta }}</td>
+    <td>${{ "{:,.2f}".format(r.saldo_contable) }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<h3>Pólizas</h3>
+
+<div class="table-card">
+
+<table class="table">
+
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Evento</th>
+    <th>Referencia</th>
+    <th>Cargos</th>
+    <th>Abonos</th>
+    <th>Estatus</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in polizas %}
+
+<tr>
+    <td>{{ p.id_poliza }}</td>
+    <td>{{ p.clave_evento }}</td>
+    <td>{{ p.referencia }}</td>
+    <td>${{ "{:,.2f}".format(p.total_cargos) }}</td>
+    <td>${{ "{:,.2f}".format(p.total_abonos) }}</td>
+    <td>{{ p.estatus_balance }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Dashboard Ejecutivo</h1>
+<p class="text-muted">SIARC 1.0 - Vista general de cartera, riesgo, FONAGA y contabilidad.</p>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Cartera Total</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.saldo_total or 0) }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">IMOR</div>
+            <div class="kpi-value">{{ "{:.2f}".format((resumen.imor or 0) * 100) }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">PD Promedio</div>
+            <div class="kpi-value">{{ "{:.2f}".format((resumen.pd_promedio or 0) * 100) }}%</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Reserva Neta</div>
+            <div class="kpi-value">${{ "{:,.2f}".format(resumen.reserva_neta_institucion_total or 0) }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Verdes</div>
+            <div class="kpi-value text-success">{{ resumen.creditos_verdes }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Amarillos</div>
+            <div class="kpi-value text-warning">{{ resumen.creditos_amarillos }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-kpi p-4">
+            <div class="kpi-title">Rojos</div>
+            <div class="kpi-value text-danger">{{ resumen.creditos_rojos }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="table-card mt-4">
+    <h4>Alertas Operativas</h4>
+
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>Crédito</th>
+                <th>Cliente</th>
+                <th>Saldo</th>
+                <th>Días atraso</th>
+                <th>Etapa</th>
+                <th>Semáforo</th>
+                <th>Alerta</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in alertas %}
+            <tr>
+                <td>{{ r.codigo_credito }}</td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_actual or 0) }}</td>
+                <td>{{ r.dias_atraso }}</td>
+                <td>{{ r.etapa_riesgo }}</td>
+                <td>
+                    {% if r.semaforo == 'VERDE' %}
+                        <span class="badge badge-verde">VERDE</span>
+                    {% elif r.semaforo == 'AMARILLO' %}
+                        <span class="badge badge-amarillo">AMARILLO</span>
+                    {% else %}
+                        <span class="badge badge-rojo">ROJO</span>
+                    {% endif %}
+                </td>
+                <td>{{ r.alerta_operativa }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

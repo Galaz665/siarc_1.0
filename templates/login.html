@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SIARC | Inicio de sesión</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #0b2545 0%, #00a6a6 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .brand-panel {
+            width: 42%;
+            background: #ffffff;
+            padding: 70px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-title {
+            font-size: 64px;
+            font-weight: 800;
+            color: #0b2545;
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            font-size: 22px;
+            color: #0b2545;
+            letter-spacing: 2px;
+        }
+
+        .feature {
+            margin-top: 28px;
+            color: #0b2545;
+        }
+
+        .feature strong {
+            color: #00a6a6;
+        }
+
+        .login-panel {
+            width: 58%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .login-card h1 {
+            color: #0b2545;
+            font-weight: 800;
+        }
+
+        .login-card h1 span {
+            color: #00a6a6;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #0b2545;
+        }
+
+        .btn-siarc {
+            background: linear-gradient(90deg, #0b2545, #00a6a6);
+            color: white;
+            border: none;
+            font-weight: 700;
+            padding: 13px;
+            border-radius: 10px;
+        }
+
+        .btn-siarc:hover {
+            color: white;
+            opacity: .95;
+        }
+
+        .secure-box {
+            margin-top: 28px;
+            border: 1px solid #cfe8ef;
+            background: #f4fbfd;
+            padding: 16px;
+            border-radius: 12px;
+            color: #0b2545;
+        }
+
+        .version {
+            text-align: center;
+            color: #6c757d;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-wrapper">
+
+    <div class="brand-panel">
+        <div class="brand-title">SIARC</div>
+        <div class="brand-subtitle">Sistema Integral de Crédito y Riesgo</div>
+
+        <div class="feature">
+            <strong>INTELIGENTE</strong><br>
+            Información oportuna para mejores decisiones.
+        </div>
+
+        <div class="feature">
+            <strong>SEGURO</strong><br>
+            Plataforma confiable para la gestión de cartera.
+        </div>
+
+        <div class="feature">
+            <strong>INTEGRAL</strong><br>
+            Crédito, riesgo, contabilidad, IFRS9 y garantías.
+        </div>
+    </div>
+
+    <div class="login-panel">
+        <div class="login-card">
+
+            <img src="/static/img/logo_siarc.svg"
+                alt="SIARC"
+                style="display:block; margin:0 auto 25px auto; max-width:320px;">
+
+            <h1 class="text-center mb-2">
+                Bienvenido a <span>SIARC</span>
+            </h1>
+
+            <p class="text-muted text-center mb-4">
+                Ingresa tus credenciales para continuar
+            </p>
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input
+                        class="form-control form-control-lg"
+                        name="usuario"
+                        placeholder="Ingresa tu usuario"
+                        autocomplete="username"
+                        required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Contraseña</label>
+                    <input
+                        class="form-control form-control-lg"
+                        name="password"
+                        type="password"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                        required>
+                </div>
+
+                <button class="btn btn-siarc w-100">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <div class="version">
+                SIARC Web v1.0.0
+            </div>
+
+            <div class="secure-box">
+                <strong>Sistema seguro y confiable</strong><br>
+                Diseñado para la gestión inteligente de crédito y riesgo.
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<svg width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00A6A6"/>
+      <stop offset="100%" stop-color="#3DDC97"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(10,12)">
+    <path d="M2 40 C20 38, 34 28, 48 10"
+          fill="none"
+          stroke="url(#teal)"
+          stroke-width="6"
+          stroke-linecap="round"/>
+    <line x1="2" y1="46" x2="58" y2="46"
+          stroke="#35d6d6"
+          stroke-width="2"
+          stroke-linecap="round"/>
+    <circle cx="2" cy="40" r="6" fill="#00A6A6"/>
+    <circle cx="22" cy="32" r="5" fill="#3DDC97"/>
+    <circle cx="40" cy="17" r="5" fill="#00A6A6"/>
+    <circle cx="48" cy="10" r="5" fill="#3DDC97"/>
+  </g>
+
+  <text x="78" y="34"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="24"
+        font-weight="800"
+        letter-spacing="2"
+        fill="#FFFFFF">SIARC</text>
+
+  <text x="79" y="52"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="9"
+        fill="#B7C6D9">Análisis de Riesgo de Cartera</text>
+</svg>

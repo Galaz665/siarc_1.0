@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Liquidar Crédito</h1>
+
+<p class="text-muted">
+    {{ credito.codigo_credito }} - {{ credito.nombre_acreditado }}
+</p>
+
+<div class="table-card">
+
+    <h4>Saldo a liquidar</h4>
+
+    <h2>${{ "{:,.2f}".format(credito.saldo_actual or 0) }}</h2>
+
+    <form method="post">
+
+        <div class="row g-3 mt-3">
+
+            <div class="col-md-4">
+                <label>Fecha de liquidación</label>
+                <input class="form-control" name="fecha_pago" type="date" required>
+            </div>
+
+            <div class="col-md-4">
+                <label>Referencia externa</label>
+                <input class="form-control" name="referencia_pago" required
+                       placeholder="SPEI-12345 / EXT-0001 / BANCO-001">
+            </div>
+
+            <div class="col-md-4">
+                <label>Canal</label>
+                <select class="form-control" name="canal_pago">
+                    <option value="CAJA">Caja</option>
+                    <option value="SPEI">SPEI</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                    <option value="BANCO">Banco</option>
+                    <option value="API_EXTERNA">API externa</option>
+                    <option value="MIFOS">Mifos</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>Usuario</label>
+                <input class="form-control" name="usuario" value="SIARC_WEB">
+            </div>
+
+            <div class="col-md-8">
+                <label>Observaciones</label>
+                <input class="form-control" name="observaciones"
+                       value="Liquidación total desde SIARC Web">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-danger"
+                onclick="return confirm('¿Seguro que deseas liquidar completamente este crédito?');">
+            Confirmar Liquidación
+        </button>
+
+        <a href="/creditos/{{ credito.codigo_credito }}" class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

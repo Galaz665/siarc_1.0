@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Créditos</h1>
+<p class="text-muted">Cartera originada y estado operativo de cada crédito.</p>
+
+<div class="table-card mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Crédito</th>
+                <th>Acreditado</th>
+                <th>Monto aprobado</th>
+                <th>Saldo actual</th>
+                <th>Monto vencido</th>
+                <th>Días atraso</th>
+                <th>Etapa</th>
+                <th>Clasificación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for r in datos %}
+            <tr>
+                <td>{{ r.codigo_credito }}</td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>${{ "{:,.2f}".format(r.monto_aprobado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_actual or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.monto_vencido or 0) }}</td>
+                <td>{{ r.dias_atraso }}</td>
+                <td>{{ r.etapa_riesgo }}</td>
+                <td>{{ r.clasificacion_cartera }}</td>
+                <td>
+                    <a href="/creditos/{{ r.codigo_credito }}"
+                       class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

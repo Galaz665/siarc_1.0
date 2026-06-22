@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>FONAGA / FEGA</h1>
+<p class="text-muted">Reclamaciones, pagos del fondo y recuperaciones posteriores.</p>
+
+<div class="table-card mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Crédito</th>
+                <th>Acreditado</th>
+                <th>Fondo</th>
+                <th>Saldo reclamado</th>
+                <th>Reclamado fondo</th>
+                <th>Cargo institución</th>
+                <th>Pagado fondo</th>
+                <th>Recuperado</th>
+                <th>Para fondo</th>
+                <th>Para institución</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in datos %}
+            <tr>
+                <td>{{ r.id_reclamacion }}</td>
+                <td>{{ r.codigo_credito }}</td>
+                <td>{{ r.nombre_acreditado }}</td>
+                <td>{{ r.fondo }}</td>
+                <td>${{ "{:,.2f}".format(r.saldo_reclamado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.monto_reclamado_fondo or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.monto_a_cargo_institucion or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.total_pagado_fondo or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.total_recuperado or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.recuperado_para_fondo or 0) }}</td>
+                <td>${{ "{:,.2f}".format(r.recuperado_para_institucion or 0) }}</td>
+                <td>{{ r.estatus_reclamacion }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

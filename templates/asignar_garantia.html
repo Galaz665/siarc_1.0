@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Asignar Garantía</h1>
+
+<p class="text-muted">
+    {{ credito.codigo_credito }} - {{ credito.nombre_acreditado }}
+</p>
+
+<div class="table-card">
+
+    <h4>Datos del crédito</h4>
+
+    <table class="table">
+        <tr>
+            <th>Saldo actual</th>
+            <td>${{ "{:,.2f}".format(credito.saldo_actual or 0) }}</td>
+        </tr>
+    </table>
+
+    <form method="post">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label>Fondo</label>
+                <select class="form-control" name="fondo">
+                    <option value="FONAGA">FONAGA</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>Porcentaje de cobertura</label>
+                <input
+                    class="form-control"
+                    name="porcentaje"
+                    type="number"
+                    step="0.01"
+                    value="0.90"
+                    required>
+            </div>
+
+            <div class="col-md-12">
+                <label>Observaciones</label>
+                <input
+                    class="form-control"
+                    name="observaciones"
+                    value="Cobertura FONAGA 90% desde SIARC Web">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn btn-success">
+            Asignar Garantía
+        </button>
+
+        <a href="/creditos/{{ credito.codigo_credito }}"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

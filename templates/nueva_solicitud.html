@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Nueva Solicitud</h1>
+<p class="text-muted">Captura completa para análisis crediticio SIARC.</p>
+
+<form method="post">
+
+<div class="table-card">
+
+<h4>1. Datos Generales</h4>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <label>Nombre *</label>
+        <input class="form-control" name="nombre" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Paterno</label>
+        <input class="form-control" name="paterno">
+    </div>
+
+    <div class="col-md-4">
+        <label>Materno</label>
+        <input class="form-control" name="materno">
+    </div>
+
+    <div class="col-md-4">
+        <label>CURP</label>
+        <input class="form-control" name="curp">
+    </div>
+
+    <div class="col-md-4">
+        <label>RFC</label>
+        <input class="form-control" name="rfc">
+    </div>
+
+    <div class="col-md-4">
+        <label>Teléfono</label>
+        <input class="form-control" name="telefono">
+    </div>
+
+    <div class="col-md-6">
+        <label>Correo</label>
+        <input class="form-control" name="correo">
+    </div>
+</div>
+
+<hr>
+
+<h4>2. Ubicación</h4>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <label>Estado</label>
+        <input class="form-control" name="estado">
+    </div>
+
+    <div class="col-md-4">
+        <label>Municipio</label>
+        <input class="form-control" name="municipio">
+    </div>
+
+    <div class="col-md-4">
+        <label>Localidad</label>
+        <input class="form-control" name="localidad">
+    </div>
+
+    <div class="col-md-12">
+        <label>Domicilio</label>
+        <input class="form-control" name="domicilio">
+    </div>
+</div>
+
+<hr>
+
+<h4>3. Actividad Económica</h4>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <label>Actividad económica</label>
+        <select class="form-control" name="clave_actividad">
+            <option value="COMERCIO">Comercio</option>
+            <option value="AGRICULTURA">Agricultura</option>
+            <option value="GANADERIA">Ganadería</option>
+            <option value="SERVICIOS">Servicios</option>
+            <option value="MANUFACTURA">Manufactura</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label>Actividad texto</label>
+        <input class="form-control" name="actividad_economica" value="COMERCIO">
+    </div>
+
+    <div class="col-md-4">
+        <label>Ingresos mensuales</label>
+        <input class="form-control" name="ingresos_mensuales" type="number" step="0.01" value="25000">
+    </div>
+
+    <div class="col-md-4">
+        <label>Egresos mensuales</label>
+        <input class="form-control" name="egresos_mensuales" type="number" step="0.01" value="12000">
+    </div>
+</div>
+
+<hr>
+
+<h4>4. Crédito Solicitado</h4>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <label>Producto</label>
+        <select class="form-control" name="clave_producto">
+            <option value="PYME">Crédito PyME</option>
+            <option value="AGRO">Crédito Agropecuario</option>
+            <option value="INDIVIDUAL">Crédito Individual</option>
+            <option value="GRUPAL">Crédito Grupal</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label>Producto texto</label>
+        <input class="form-control" name="producto_solicitado" value="Crédito PyME">
+    </div>
+
+    <div class="col-md-4">
+        <label>Destino</label>
+        <select class="form-control" name="clave_destino">
+            <option value="CAPITAL_TRABAJO">Capital de trabajo</option>
+            <option value="ACTIVO_FIJO">Activo fijo</option>
+            <option value="INVERSION_PRODUCTIVA">Inversión productiva</option>
+            <option value="REFACCIONARIO">Refaccionario</option>
+            <option value="AVIO">Avío</option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label>Destino texto</label>
+        <input class="form-control" name="destino_credito" value="Capital de trabajo">
+    </div>
+
+    <div class="col-md-3">
+        <label>Monto solicitado *</label>
+        <input class="form-control" name="monto_solicitado" type="number" step="0.01" required>
+    </div>
+
+    <div class="col-md-3">
+        <label>Plazo meses *</label>
+        <input class="form-control" name="plazo_meses" type="number" required>
+    </div>
+
+    <div class="col-md-3">
+        <label>Tasa anual</label>
+        <input class="form-control" name="tasa_interes_anual" type="number" step="0.0001" value="0.28">
+    </div>
+</div>
+
+<hr>
+
+<h4>5. Garantía</h4>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <label>Tipo de garantía</label>
+        <select class="form-control" name="clave_tipo_garantia">
+            <option value="AVAL">Aval</option>
+            <option value="SIN_GARANTIA">Sin garantía</option>
+            <option value="PRENDARIA">Prendaria</option>
+            <option value="HIPOTECARIA">Hipotecaria</option>
+            <option value="LIQUIDA">Líquida</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label>Garantía texto</label>
+        <input class="form-control" name="tipo_garantia" value="Aval">
+    </div>
+
+    <div class="col-md-4">
+        <label>Valor garantía</label>
+        <input class="form-control" name="valor_garantia" type="number" step="0.01" value="0">
+    </div>
+</div>
+
+<br>
+
+<button class="btn btn-success">
+    Guardar Solicitud
+</button>
+
+<a href="/solicitudes" class="btn btn-secondary">
+    Cancelar
+</a>
+
+</div>
+
+</form>
+
+{% endblock %}
